@@ -1,11 +1,11 @@
 <template>
-  <todo />
-  <!-- <helloWorld /> -->
+  <div>
+    <todo />
+  </div>
 </template>
 
 <script>
-// import helloWorld from "./components/HelloWorld.vue";
-import todo from "./components/todo.vue";
+import todo from "./components/todo";
 
 export default {
   name: "App",
@@ -13,8 +13,6 @@ export default {
     todo,
   },
 };
-
-// Todo;
 </script>
 
 <style></style>

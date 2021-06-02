@@ -1,23 +1,21 @@
 <template>
   <div
-    class="bg-gray-200 h-screen w-full flex items-center justify-center bg-teal-lightest font-sans"
+    class="flex-col bg-gray-800 h-screen w-screen flex items-center justify-center font-sans"
   >
-    <div
-      class="bg-yellow-200 rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg"
-    >
+    <div class="bg-gray-600 rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
       <div class="mb-4">
-        <h1 class="text-grey-darkest">Todo List</h1>
-        <div class="flex mt-4">
+        <h1 class="text-white">Todo List</h1>
+        <!-- <div class="flex mt-4"> -->
+        <form class="flex mt-4" @submit.prevent="addTodo()">
           <input
-            type="text"
-            v-model="msg"
-            class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
+            class="border border-gray-800 focus:border-blue-500 rounded w-full py-2 px-3 mr-4 text-black"
             placeholder="Add Todo"
-            @keyup.enter="Create"
+            v-model="newTodo"
           />
+          <!-- Add button -->
           <button
-            class="focus:outline-none transform uppercase p-3 flex items-center bg-red-500 text-blue-50 max-w-max shadow-sm hover:shadow-md hover:bg-red-400 rounded-full w-12 h-12 "
-            @click="Create"
+            class="p-0 w-12 h-10 bg-gray-500 rounded-full hover:bg-gray-400 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+            @click="addTodo()"
           >
             <svg
               viewBox="0 0 20 20"
@@ -32,51 +30,83 @@
               />
             </svg>
           </button>
+        </form>
+        <!-- </div> -->
+      </div>
+      <div>
+        <div class="flex mb-4 items-center">
+          <p class="w-full text-white">
+            <completed
+              :TodoLists="TodoLists"
+              :Delete="Delete"
+              :doneTodo="doneTodo"
+            />
+          </p>
         </div>
       </div>
-      <!-- cancel button -->
-      <TodoList :TodoLists="TodoLists" :Delete="Delete" />
+      <!-- Completed -->
     </div>
+    <div class="w-full bg-gray-800 flex items-center justify-center font-sans">
+      <div
+        class="bg-gray-600 rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg"
+      >
+        <div class="mb-4">
+          <h1 class="text-white">Completed</h1>
+          <div class="flex mt-4 text-white">
+            <p class="text-white"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of file -->
   </div>
 </template>
 
 <script>
-import TodoList from "./ListDelete";
-import { ref } from "@vue/runtime-core";
+import { ref } from "vue";
+import completed from "./Completed";
 export default {
   components: {
-    TodoList,
-  },
-  data() {
-    return {
-      msg: "",
-      newList: [],
-      // todo: [{ id: 0, name: "" }],
-    };
+    completed,
   },
   setup() {
-    let exampleData = [{ id: 1, name: "cooking" }];
-    return {
-      TodoLists: ref(exampleData),
-    };
-  },
-  computed: {},
-  methods: {
-    Create() {
-      if (this.msg.length !== 0) {
-        this.TodoLists.name = "Abuchu";
-        console.log(this.TodoLists.value);
-        // const next = { id, name: this.msg };
-        // this.TodoLists.push(next);
-        // console.log(this.TodoLists);
-        // this.msg = "";
-      } else {
-        alert("No input provided!!");
+    const newTodo = ref("");
+    const defaultData = [
+      {
+        done: false,
+        name: "Write a blog post",
+      },
+    ];
+    // let exampleData = [
+    //   { id: 1, name: "cooking" },
+    //   { id: 2, name: "eating" },
+    //   { id: 3, name: "dancing" },
+    // ];
+    const todos = ref(defaultData);
+    function addTodo() {
+      if (newTodo.value) {
+        todos.value.push({
+          done: false,
+          name: newTodo.value,
+        });
+        newTodo.value = "";
       }
-    },
-    Delete(idx) {
-      console.log(this.TodoLists[idx]);
-    },
+    }
+
+    function Delete(idx) {
+      todos.value.splice(idx, 1);
+    }
+    function doneTodo(todos) {
+      todos.done = !todos.done;
+      console.log(todos);
+    }
+    return {
+      TodoLists: todos,
+      addTodo,
+      newTodo,
+      Delete,
+      doneTodo,
+    };
   },
 };
 </script>
