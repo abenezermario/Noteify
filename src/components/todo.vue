@@ -37,7 +37,7 @@
         <div class="flex mb-4 items-center">
           <p class="w-full text-white">
             <completed
-              :TodoLists="TodoLists"
+              :TodoLists="todos"
               :Delete="Delete"
               :doneTodo="doneTodo"
             />
@@ -53,7 +53,15 @@
         <div class="mb-4">
           <h1 class="text-white">Completed</h1>
           <div class="flex mt-4 text-white">
-            <p class="text-white"></p>
+                  <label class="inline-flex items-center mt-3 ">
+
+            <ul>
+              <li class="text-white" v-for="(completedItems, index) in checked" :key="index">
+               <span class="line-through" v-on:click="doneTodo(checked)">{{ completedItems.done }}</span>
+
+              </li>
+            </ul>
+      </label>
           </div>
         </div>
       </div>
@@ -71,41 +79,45 @@ export default {
   },
   setup() {
     const newTodo = ref("");
+    const checked = ref([])
     const defaultData = [
       {
         done: false,
         name: "Write a blog post",
       },
     ];
-    // let exampleData = [
-    //   { id: 1, name: "cooking" },
-    //   { id: 2, name: "eating" },
-    //   { id: 3, name: "dancing" },
-    // ];
     const todos = ref(defaultData);
     function addTodo() {
       if (newTodo.value) {
         todos.value.push({
           done: false,
           name: newTodo.value,
+         
         });
         newTodo.value = "";
+        //  console.log(typeof(todos.value))
       }
+    
     }
 
     function Delete(idx) {
       todos.value.splice(idx, 1);
     }
     function doneTodo(todos) {
-      todos.done = !todos.done;
-      console.log(todos);
+      if(todos.value !== ''){
+        todos.done = true
+        checked.value.push({name:todos.name})
+        
+      }
+      // console.log(todos);
     }
     return {
-      TodoLists: todos,
+      todos,
       addTodo,
       newTodo,
       Delete,
       doneTodo,
+      checked
     };
   },
 };

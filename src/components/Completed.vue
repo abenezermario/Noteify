@@ -16,7 +16,6 @@
           :class="{ done: todolist.done }"
           @click="doneTodo(todolist)"
           >{{ todolist.name }}
-          {{ checkedNames }}
         </span>
 
         <!-- <span
