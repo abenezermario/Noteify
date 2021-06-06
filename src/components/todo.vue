@@ -39,7 +39,7 @@
             <completed
               :TodoLists="todos"
               :Delete="Delete"
-              :doneTodo="doneTodo"
+              :toggleTodo="toggleTodo"
             />
           </p>
         </div>
@@ -53,15 +53,20 @@
         <div class="mb-4">
           <h1 class="text-white">Completed</h1>
           <div class="flex mt-4 text-white">
-                  <label class="inline-flex items-center mt-3 ">
-
-            <ul>
-              <li class="text-white" v-for="(completedItems, index) in checked" :key="index">
-               <span class="line-through" v-on:click="doneTodo(checked)">{{ completedItems.done }}</span>
-
-              </li>
-            </ul>
-      </label>
+            <label class="inline-flex items-center mt-3 ">
+              <ul>
+                <li
+                  class="text-white"
+                  @click="reopentodo(completedItems)"
+                  v-for="(completedItems, index) in checked"
+                  :key="index"
+                >
+                  <span v-show="completedItems.done">
+                    {{ completedItems.name }}
+                  </span>
+                </li>
+              </ul>
+            </label>
           </div>
         </div>
       </div>
@@ -79,7 +84,7 @@ export default {
   },
   setup() {
     const newTodo = ref("");
-    const checked = ref([])
+    const checked = ref([]);
     const defaultData = [
       {
         done: false,
@@ -92,32 +97,42 @@ export default {
         todos.value.push({
           done: false,
           name: newTodo.value,
-         
         });
         newTodo.value = "";
         //  console.log(typeof(todos.value))
       }
-    
     }
 
     function Delete(idx) {
       todos.value.splice(idx, 1);
     }
-    function doneTodo(todos) {
-      if(todos.value !== ''){
-        todos.done = true
-        checked.value.push({name:todos.name})
-        
+
+    function toggleTodo(todos) {
+      if (todos.name != "") {
+        todos.done = !todos.done;
+        if (todos.done === true) {
+          checked.value.push({ done: todos.done, name: todos.name });
+          todos.name;
+          console.log(checked.value);
+          console.log(todos.name, todos.done);
+        } else {
+          console.log(todos.done);
+        }
       }
-      // console.log(todos);
+    }
+
+    function reopentodo(completedItems) {
+      completedItems.done = !completedItems.done;
+      console.log(completedItems.done);
     }
     return {
       todos,
       addTodo,
       newTodo,
       Delete,
-      doneTodo,
-      checked
+      checked,
+      toggleTodo,
+      reopentodo,
     };
   },
 };

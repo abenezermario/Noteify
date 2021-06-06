@@ -6,22 +6,21 @@
       :key="index"
     >
       <label class="inline-flex items-center mt-3 ">
-        <input
+        <!-- <input
           type="checkbox"
           v-model="checkedNames"
           :class="{ done: todolist.done }"
-        />
+        /> -->
         <span
-          class="ml-2 text-white"
+          v-show="!todolist.done"
           :class="{ done: todolist.done }"
-          @click="doneTodo(todolist)"
+          @click="toggleTodo(todolist)"
           >{{ todolist.name }}
         </span>
 
-        <!-- <span
-          class="ml-2 text-white"
+        <span class="ml-2 text-white" v-show="todolist.done"
           >{{ todolist.name }}
-          </span> -->
+        </span>
       </label>
       <button
         class="focus:outline-none transform scale-75 uppercase p-3 flex items-center bg-gray-500 hover:bg-gray-400 text-blue-50 max-w-max shadow-sm hover:shadow-lg rounded-full w-12 h-12 "
@@ -48,14 +47,17 @@
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   props: {
     TodoLists: Array,
     Delete: Function,
-    doneTodo: Function,
+    // doneTodo: Function,
+    toggleTodo: Function,
   },
   setup() {
-    const checkedNames = [];
+    const checkedNames = ref([]);
+
     return {
       checkedNames,
     };
@@ -63,4 +65,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.done {
+  text-decoration: line-through;
+}
+</style>
