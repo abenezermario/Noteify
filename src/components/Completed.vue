@@ -11,16 +11,15 @@
           v-model="checkedNames"
           :class="{ done: todolist.done }"
         /> -->
-        <span
-          v-show="!todolist.done"
-          :class="{ done: todolist.done }"
-          @click="toggleTodo(todolist)"
-          >{{ todolist.name }}
-        </span>
-
-        <span class="ml-2 text-white" v-show="todolist.done"
-          >{{ todolist.name }}
-        </span>
+        <div class="cursor-pointer">
+          <span :class="{ done: todolist.done }" @click="toggleTodo(todolist)">
+            {{ todolist.name }}
+          </span>
+          <br />
+          <span v-show="todolist.done"
+            >(completed at {{ new Date().toString() }})</span
+          >
+        </div>
       </label>
       <button
         class="focus:outline-none transform scale-75 uppercase p-3 flex items-center bg-gray-500 hover:bg-gray-400 text-blue-50 max-w-max shadow-sm hover:shadow-lg rounded-full w-12 h-12 "
@@ -57,7 +56,6 @@ export default {
   },
   setup() {
     const checkedNames = ref([]);
-
     return {
       checkedNames,
     };
@@ -68,5 +66,8 @@ export default {
 <style>
 .done {
   text-decoration: line-through;
+}
+.nodec {
+  text-decoration: none;
 }
 </style>

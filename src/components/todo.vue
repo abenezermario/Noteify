@@ -44,32 +44,6 @@
           </p>
         </div>
       </div>
-      <!-- Completed -->
-    </div>
-    <div class="w-full bg-gray-800 flex items-center justify-center font-sans">
-      <div
-        class="bg-gray-600 rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg"
-      >
-        <div class="mb-4">
-          <h1 class="text-white">Completed</h1>
-          <div class="flex mt-4 text-white">
-            <label class="inline-flex items-center mt-3 ">
-              <ul>
-                <li
-                  class="text-white"
-                  @click="reopentodo(completedItems)"
-                  v-for="(completedItems, index) in checked"
-                  :key="index"
-                >
-                  <span v-show="completedItems.done">
-                    {{ completedItems.name }}
-                  </span>
-                </li>
-              </ul>
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
     <!-- End of file -->
   </div>
@@ -85,6 +59,7 @@ export default {
   setup() {
     const newTodo = ref("");
     const checked = ref([]);
+    const drag = false;
     const defaultData = [
       {
         done: false,
@@ -108,22 +83,15 @@ export default {
     }
 
     function toggleTodo(todos) {
-      if (todos.name != "") {
-        todos.done = !todos.done;
-        if (todos.done === true) {
-          checked.value.push({ done: todos.done, name: todos.name });
-          todos.name;
-          console.log(checked.value);
-          console.log(todos.name, todos.done);
-        } else {
-          console.log(todos.done);
-        }
-      }
+      todos.done = !todos.done;
+
+      checked.value.push({ done: todos.done, name: todos.name });
+      console.log(checked.value);
     }
 
     function reopentodo(completedItems) {
-      completedItems.done = !completedItems.done;
-      console.log(completedItems.done);
+      console.log(completedItems);
+      // todos.done = !todos.done;
     }
     return {
       todos,
@@ -133,6 +101,7 @@ export default {
       checked,
       toggleTodo,
       reopentodo,
+      drag,
     };
   },
 };
